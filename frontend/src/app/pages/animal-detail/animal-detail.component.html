@@ -1,0 +1,40 @@
+<div *ngIf="animal; else loading" class="animal-detail">
+  <h2>{{ animal.name }}</h2>
+  <img [src]="'http://localhost:5000' + animal.imageUrl" alt="{{animal.name}}">
+  <p><strong>Faj:</strong> {{ animal.species }}</p>
+  <p><strong>Fajta:</strong> {{ animal.breed }}</p>
+  <p><strong>Kor:</strong> {{ animal.age }} év</p>
+  <p><strong>Leírás:</strong> {{ animal.description }}</p>
+  <p><strong>Egészségi állapot:</strong> {{ animal.health }}</p>
+  <div class="story-section" *ngIf="animal?.story">
+  <h3>Élettörténet</h3>
+  <p>{{ animal.story }}</p>
+</div>
+
+  <button *ngIf="isLoggedIn()" (click)="toggleFavorite()">
+    {{ isFavorite ? '💔 Eltávolítás a kedvencekből' : '❤️ Hozzáadás a kedvencekhez' }}
+  </button>
+
+  <button *ngIf="isAdmin" (click)="editAnimal()">Szerkesztés</button>
+  <button *ngIf="isAdmin" (click)="toggleUpdateBox()">➕ Frissítés hozzáadása</button>
+
+<div *ngIf="showUpdateBox">
+  <textarea [(ngModel)]="newUpdateText" rows="4" cols="50" placeholder="Írj ide egy új frissítést..."></textarea>
+  <br>
+  <button (click)="submitUpdate()">📩 Küldés</button>
+</div>
+
+<div *ngIf="animal?.updates?.length" class="updates-list">
+  <h3>Frissítések</h3>
+  <ul>
+    <li *ngFor="let update of animal.updates">
+       {{ update }}
+    </li>
+  </ul>
+</div>
+</div>
+
+
+<ng-template #loading>
+  <p>Betöltés...</p>
+</ng-template>

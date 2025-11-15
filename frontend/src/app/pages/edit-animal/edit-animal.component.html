@@ -1,0 +1,59 @@
+<div class="edit-container">
+  <h2>Állat szerkesztése</h2>
+
+  <form [formGroup]="form" (ngSubmit)="saveChanges()">
+    <div class="form-group">
+      <label for="name">Név:</label>
+      <input id="name" type="text" formControlName="name" />
+    </div>
+
+    <div class="form-group">
+      <label for="species">Faj:</label>
+      <input id="species" type="text" formControlName="species" />
+    </div>
+
+    <div class="form-group">
+      <label for="breed">Fajta:</label>
+      <input id="breed" type="text" formControlName="breed" />
+    </div>
+
+    <div class="form-group">
+      <label for="age">Kor:</label>
+      <input id="age" type="number" formControlName="age" />
+    </div>
+
+    <div class="form-group">
+      <label for="description">Leírás:</label>
+      <textarea id="description" formControlName="description"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="health">Egészségi állapot:</label>
+      <input id="health" type="text" formControlName="health" />
+    </div>
+
+    <div class="form-group">
+      <label for="story">Történet:</label>
+      <textarea id="story" formControlName="story"></textarea>
+    </div>
+
+   <div class="form-group">
+  <label for="image">Kép:</label>
+  <input id="image" type="file" (change)="onFileSelected($event)" />
+</div>
+
+<div *ngIf="currentImageUrl">
+  <p>Jelenlegi kép:</p>
+  <img [src]="currentImageUrl" alt="Jelenlegi kép" width="200" />
+</div>
+
+
+
+    <div class="messages">
+      <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
+      <div class="success" *ngIf="successMessage">{{ successMessage }}</div>
+    </div>
+
+    <button type="submit" [disabled]="form.invalid">Mentés</button>
+  </form>
+</div>

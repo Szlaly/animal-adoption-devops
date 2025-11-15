@@ -1,0 +1,48 @@
+<div class="profile-container">
+  <h2>👤 Profilom</h2>
+
+  <div class="user-info" *ngIf="user">
+  <p><strong>Név:</strong> {{ user.name }}</p>
+  <p><strong>Email:</strong> {{ user.email || 'N/A' }}</p>
+  <p><strong>Szerepkör:</strong> {{ user.role }}</p>
+
+  <button (click)="showChangePassword = !showChangePassword" class="save-btn">
+    Jelszó módosítása
+  </button>
+
+  <app-change-password *ngIf="showChangePassword"></app-change-password>
+
+  <button (click)="confirmDelete()" class="delete-btn" style="margin-top: 1rem;">
+    Fiók törlése
+  </button>
+</div>
+
+  <div class="favorites">
+    <h3>❤️ Kedvenc állataim</h3>
+    <div *ngIf="favorites.length > 0; else noFavs">
+      <ul>
+        <li *ngFor="let animal of favorites">
+          <a [routerLink]="['/animals', animal._id]">{{ animal.name }} ({{ animal.species }})</a>
+        </li>
+      </ul>
+    </div>
+    <ng-template #noFavs>
+      <p class="empty-message">Nincsenek még kedvenc állataid.</p>
+    </ng-template>
+  </div>
+
+  <div class="adoption-requests">
+    <h3>📄 Örökbefogadási kérelmeim</h3>
+    <div *ngIf="adoptionRequests.length > 0; else noRequests">
+      <div *ngFor="let request of adoptionRequests" class="request-card">
+        <p><strong>Állat:</strong> {{ request.animal?.name }}</p>
+        <p><strong>Üzenet:</strong> {{ request.message }}</p>
+        <p><strong>Találkozó dátuma:</strong> {{ request.meetingDate ? (request.meetingDate | date:'mediumDate') : 'Még nincs egyeztetve' }}</p>
+        <p><strong>Státusz:</strong> {{ request.status }}</p>
+      </div>
+    </div>
+    <ng-template #noRequests>
+      <p class="empty-message">Még nem küldtél be örökbefogadási kérelmet.</p>
+    </ng-template>
+  </div>
+</div>

@@ -1,0 +1,54 @@
+<div class="add-animal-page">
+  <h2>Új állat hozzáadása</h2>
+  <form (ngSubmit)="submitAnimal()">
+    <label>
+      Név:
+      <input type="text" [(ngModel)]="animal.name" name="name" required />
+    </label>
+
+    <label>
+      Kor:
+      <input type="number" [(ngModel)]="animal.age" name="age" />
+    </label>
+
+    <label>
+      Faj:
+      <input type="text" [(ngModel)]="animal.species" name="species" />
+    </label>
+
+    <label>
+      Fajta:
+      <input type="text" [(ngModel)]="animal.breed" name="breed" />
+    </label>
+
+    <label>
+      Leírás:
+      <textarea [(ngModel)]="animal.description" name="description" required></textarea>
+    </label>
+
+    <label>
+      Egészségi állapot:
+      <input type="text" [(ngModel)]="animal.health" name="health" />
+    </label>
+
+    <label>
+      Történet:
+      <textarea [(ngModel)]="animal.story" name="story"></textarea>
+    </label>
+
+    <label>
+  Állat képe:
+  <input
+    type="file"
+    id="fileInput"
+    (change)="onFileSelected($event)"
+    accept="image/*"
+    class="custom-file-input"
+  />
+</label>
+
+
+
+    <button type="submit">Mentés</button>
+  </form>
+</div>

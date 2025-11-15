@@ -1,0 +1,103 @@
+.profile-container {
+  max-width: 700px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h2, h3 {
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;  // távolság a gyerek elemek között, pl. gombok és jelszó komponens
+
+  p {
+    margin: 0.4rem 0;
+  }
+
+  button {
+    display: block;
+    width: fit-content; // ha nem akarod teljes szélességben
+    max-width: 100%;
+  }
+}
+
+.request-card p {
+  margin: 0.4rem 0;
+}
+
+.favorites,
+.adoption-requests {
+  margin-top: 2rem;
+}
+
+ul {
+  padding-left: 1.5rem;
+}
+
+li {
+  margin: 0.5rem 0;
+}
+
+a {
+  text-decoration: none;
+  color: #0077cc;
+  transition: color 0.2s;
+
+  &:hover {
+    color: #005fa3;
+  }
+}
+
+.request-card {
+  background-color: #f2f2f2;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-left: 4px solid #0077cc;
+}
+
+.empty-message {
+  color: #777;
+  font-style: italic;
+}
+
+.delete-btn {
+  background-color: #e53935;
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 1rem;
+
+  &:hover {
+    background-color: #c62828;
+  }
+}
+
+.save-btn {
+  background-color: #4caf50;
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: background-color 0.3s;
+
+  &:hover:not(:disabled) {
+    background-color: #388e3c;
+  }
+
+  &:disabled {
+    background-color: #a5d6a7;
+    cursor: default;
+  }
+}

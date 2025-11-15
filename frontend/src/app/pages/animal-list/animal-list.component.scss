@@ -1,0 +1,85 @@
+.animal-list-page {
+  padding: 40px 20px;
+  text-align: center;
+
+  > button {
+    background-color: #2196F3;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-bottom: 30px;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: #1976D2;
+    }
+  }
+}
+
+.animal-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.animal-card {
+  width: 280px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  img {
+    width: 100%;
+    border-radius: 8px;
+  }
+
+  h3 {
+    margin: 10px 0 5px;
+  }
+
+  p {
+    font-size: 0.9rem;
+    color: #666;
+  }
+
+  .action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+
+    button {
+      flex: 1;
+      padding: 8px 0;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: #388E3C;
+      }
+
+      &.delete {
+        background-color: #f44336;
+
+        &:hover {
+          background-color: #d32f2f;
+        }
+      }
+    }
+  }
+}

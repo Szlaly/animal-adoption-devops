@@ -1,0 +1,15 @@
+<div class="auth-container">
+  <h2>Bejelentkezés</h2>
+  <form (submit)="onLogin($event)">
+    <label for="email">Email cím</label>
+    <input type="email" id="email" [(ngModel)]="email" name="email" placeholder="pl. te@email.com" required />
+
+    <label for="password">Jelszó</label>
+    <input type="password" id="password" [(ngModel)]="password" name="password" placeholder="Jelszó" required />
+
+    <button type="submit">Bejelentkezés</button>
+
+    <p>{{ message }}</p>
+    <p class="alt-link">Nincs még fiókod? <a routerLink="/register">Regisztrálj itt!</a></p>
+  </form>
+</div>

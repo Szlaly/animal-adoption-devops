@@ -1,0 +1,12 @@
+<main class="main">
+  <nav>
+    <ng-container *ngFor="let link of navLinks; let i = index">
+      <ng-container *ngIf="link.show">
+        <ng-container *ngIf="hasPreviousVisible(i)"> | </ng-container>
+        <a [routerLink]="link.path">{{ link.label }}</a>
+      </ng-container>
+    </ng-container>
+  </nav>
+
+  <router-outlet />
+</main>

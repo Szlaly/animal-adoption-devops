@@ -1,0 +1,23 @@
+<div class="animal-list-page">
+  <h2>Összes örökbefogadható állat</h2>
+
+  <button *ngIf="authService.isAdmin()" (click)="goToAddAnimal()">+ Új állat hozzáadása</button>
+
+  <div class="animal-grid">
+    <div class="animal-card" *ngFor="let animal of animals">
+      <img [src]="'http://localhost:5000' + animal.imageUrl" alt="{{animal.name}}">
+      <h3>{{ animal.name }}</h3>
+      <p>{{ animal.description }}</p>
+
+      <div class="action-buttons">
+        <button [routerLink]="['/animals', animal._id]">Részletek</button>
+        <button
+          *ngIf="authService.isAdmin() && animal._id"
+          (click)="deleteAnimal(animal._id!)"
+          class="delete">
+          ❌ Törlés
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

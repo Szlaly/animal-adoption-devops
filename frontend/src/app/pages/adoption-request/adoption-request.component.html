@@ -1,0 +1,26 @@
+<div class="support-page">
+  <h2>Örökbefogadási kérelem</h2>
+  <p>Kérjük, add meg az adataidat és egy rövid üzenetet, miért szeretnél örökbe fogadni.</p>
+
+  <form (ngSubmit)="submitAdoptionRequest()">
+    <label for="animalId">Állat kiválasztása</label>
+    <select id="animalId" [(ngModel)]="animalId" name="animalId" required>
+      <option value="" disabled selected>Válassz egy állatot</option>
+      <option *ngFor="let animal of animals" [value]="animal._id">{{ animal.name }}</option>
+    </select>
+
+    <label for="name">Neved</label>
+    <input id="name" type="text" [(ngModel)]="name" name="name" placeholder="Teljes neved" required />
+
+    
+    <input type="hidden" [(ngModel)]="email" name="email" />
+
+    <label for="message">Üzeneted</label>
+    <textarea id="message" [(ngModel)]="message" name="message" rows="4" placeholder="Miért szeretnél örökbe fogadni?" required></textarea>
+
+    <button type="submit">Kérelem elküldése</button>
+  </form>
+
+  <p *ngIf="successMessage" style="color: green;">{{ successMessage }}</p>
+  <p *ngIf="errorMessage" style="color: red;">{{ errorMessage }}</p>
+</div>

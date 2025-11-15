@@ -1,0 +1,126 @@
+.support-page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.support-request {
+  margin-bottom: 30px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+}
+
+.messages {
+  margin: 10px 0;
+  max-height: 250px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  padding: 10px;
+  background: #fff;
+  border-radius: 8px;
+}
+
+.own-message {
+  text-align: right;
+  background-color: #dcf8c6;
+  padding: 8px;
+  margin: 8px 0;
+  border-radius: 10px;
+}
+
+.other-message {
+  text-align: left;
+  background-color: #eee;
+  padding: 8px;
+  margin: 8px 0;
+  border-radius: 10px;
+}
+
+.timestamp {
+  font-size: 0.8rem;
+  color: #666;
+  text-align: right;
+}
+
+.reply-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.reply-form textarea {
+  width: 100%;
+  min-height: 60px;
+  resize: vertical;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.reply-form button {
+  align-self: flex-end;
+  padding: 8px 16px;
+   background-color: #28a745;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+}
+
+.reply-form button:hover {
+  background-color: #218838;
+}
+.support-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 30px;
+
+  input, textarea {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+  }
+
+  button {
+    align-self: flex-start;
+    padding: 8px 16px;
+    background-color: #28a745;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background-color: #218838;
+  }
+  
+}
+
+.support-form select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  background-color: #fff;
+  color: #333;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3E%3Cpath fill='%23666' d='M2 0L0 2h4L2 0zM2 5l2-2H0l2 2z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 10px;
+}
+
+.support-form input,
+.support-form textarea,
+.support-form select {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+

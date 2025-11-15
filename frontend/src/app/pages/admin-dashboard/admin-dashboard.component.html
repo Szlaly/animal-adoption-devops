@@ -1,0 +1,68 @@
+
+<div class="admin-dashboard">
+  <h2>📋 Örökbefogadási kérelmek</h2>
+
+  <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
+
+  <div *ngIf="adoptionRequests.length === 0 && !errorMessage">
+    <p>Nincs jelenleg örökbefogadási kérelem.</p>
+  </div>
+
+  <div *ngFor="let request of adoptionRequests" class="adoption-card">
+    <p><strong>Állat:</strong> {{ request.animal?.name || 'Ismeretlen állat' }}</p>
+    <p><strong>Faj:</strong> {{ request.animal?.species || '-' }}</p>
+    <p><strong>Jelentkező:</strong> {{ request.name }}</p>
+    <p><strong>Email:</strong> {{ request.user?.email }}</p>
+    <p><strong>Üzenet:</strong> {{ request?.message || '-' }}</p>
+    <p><strong>Státusz:</strong> {{ request?.status }}</p>
+
+    <label>Találkozó időpontja:</label>
+<input 
+  type="datetime-local" 
+  [(ngModel)]="request.meetingDate" 
+  [disabled]="request.status === 'approved' || request.status === 'rejected'" 
+/>
+
+<div *ngIf="request.status !== 'approved' && request.status !== 'rejected'">
+  <button (click)="approveRequest(request)">✔️ Jóváhagyás</button>
+  <button (click)="rejectRequest(request)">❌ Elutasítás</button>
+</div>
+</div>
+<div class="support-requests">
+    <h3>🛠️ Beérkezett support kérések</h3>
+    <div *ngIf="supportRequests.length > 0; else noSupport">
+      <div *ngFor="let request of supportRequests" 
+           class="support-request" 
+           [ngClass]="{ 'closed': request.status }">
+        <p><strong>Felhasználó:</strong> {{ request.user?.name }} ({{ request.user?.email }})</p>
+        <p><strong>Tárgy:</strong> {{ request?.subject }}</p>
+        <p><strong>Állat:</strong> {{ request.animal?.name || 'Nincs megadva' }}</p>
+        <p><strong>Dátum:</strong> {{ request.createdAt | date:'mediumDate' }}</p>
+        <p><strong>Státusz:</strong> {{ request.status }}</p>
+
+        <div class="messages">
+          <div *ngFor="let msg of request.messages" class="message">
+            <p><strong>{{ msg.sender.name }}:</strong> {{ msg.text }}</p>
+            <p class="timestamp">{{ msg.sentAt | date:'short' }}</p>
+          </div>
+        </div>
+
+        <div *ngIf="request.status === 'open' && isAdmin()">
+  <textarea [(ngModel)]="newResponse[request._id]" placeholder="Írj válaszod..."></textarea>
+  <button (click)="sendResponse(request._id)">Válasz küldése</button>
+  <button class="close-button" (click)="closeRequest(request._id)">🔒 Lezárás</button>
+</div>
+
+<div *ngIf="request.status === 'closed'" class="closed-label">
+  🟢 Lezárva
+</div>
+
+      </div>
+    </div>
+    <ng-template #noSupport>
+      <p>Még nem érkezett support kérés.</p>
+    </ng-template>
+  </div>
+
+
+

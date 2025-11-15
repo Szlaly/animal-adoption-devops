@@ -1,0 +1,59 @@
+<div class="support-page">
+  <h2>🛠️ Support</h2>
+  <p>Ha kérdésed van vagy problémába ütköztél, írj nekünk!</p>
+
+  <form (ngSubmit)="submitSupportRequest()" class="support-form">
+    <input type="text" [(ngModel)]="subject" name="subject" placeholder="Tárgy" required />
+
+    <select [(ngModel)]="selectedAnimalId" name="animalId">
+      <option value="">-- Válassz állatot (nem kötelező) --</option>
+      <option *ngFor="let animal of animals" [value]="animal._id">
+        {{ animal.name }} ({{ animal.species }})
+      </option>
+    </select>
+
+    <textarea [(ngModel)]="message" name="message" placeholder="Üzenet" rows="4" required></textarea>
+    <button type="submit">Küldés</button>
+  </form>
+
+  <h2>📬 Támogatási kérelmeid</h2>
+
+  <div *ngIf="supportRequests.length > 0; else noSupport">
+    <div *ngFor="let req of supportRequests" class="support-request">
+      <h4>{{ req.subject }}</h4>
+      <p>
+        <strong>Állat:</strong>
+        <span *ngIf="req.animal; else noAnimal">{{ req.animal.name }} ({{ req.animal.species }})</span>
+        <ng-template #noAnimal>Nincs megadva</ng-template>
+      </p>
+      <p>
+        <strong>Állapot:</strong>
+        <span [ngClass]="{ 'text-success': req.status === 'open', 'text-danger': req.status === 'closed' }">
+          {{ req.status === 'closed' ? 'Lezárva' : 'Aktív' }}
+        </span>
+      </p>
+
+      <div class="messages">
+        <div *ngFor="let msg of req.messages"
+             [ngClass]="{ 'own-message': isOwnMessage(msg.sender._id), 'other-message': !isOwnMessage(msg.sender._id) }">
+          <p><strong>{{ msg.sender.name }}:</strong></p>
+          <p>{{ msg.text }}</p>
+          <p class="timestamp" *ngIf="msg.sentAt">{{ msg.sentAt | date:'short' }}</p>
+        </div>
+      </div>
+
+      <div class="reply-form" *ngIf="req.status === 'open'; else closedInfo">
+        <textarea [(ngModel)]="newMessages[req._id]" placeholder="Válasz..."></textarea>
+        <button (click)="sendReply(req._id)" [disabled]="!newMessages[req._id]?.trim()">Válasz küldése</button>
+      </div>
+
+      <ng-template #closedInfo>
+        <p class="text-muted">Ez a kérés le van zárva, nem küldhető több válasz.</p>
+      </ng-template>
+    </div>
+  </div>
+
+  <ng-template #noSupport>
+    <p>Nincs még támogatási kérésed.</p>
+  </ng-template>
+</div>

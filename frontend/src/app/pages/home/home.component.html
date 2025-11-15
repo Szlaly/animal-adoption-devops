@@ -1,0 +1,59 @@
+<div class="homepage">
+    <div class="user-info" style="position: absolute; top: 10px; right: 20px;">
+  <ng-container *ngIf="user; else notLoggedIn">
+    👤 Bejelentkezve: <strong>{{ user.name }}</strong>
+    <button (click)="logout()" style="margin-left: 10px;">Kijelentkezés</button>
+  </ng-container>
+  <ng-template #notLoggedIn>
+    <span>Nem vagy bejelentkezve</span>
+  </ng-template>
+</div>
+
+    <header class="hero">
+      <h1>Állatbarát Örökbefogadás</h1>
+      <p>Találd meg új legjobb barátodat – fogadj örökbe egy kisállatot, és változtass meg két életet egyszerre!</p>
+    </header>
+  
+    <section class="about">
+      <h2>Rólunk</h2>
+      <p>
+        Platformunk célja, hogy minél több gazdátlan állat új, szerető otthonra találjon. Önkénteseink
+        szívvel-lélekkel dolgoznak azon, hogy minden bundás barátunk boldog, biztonságos környezetbe kerüljön.
+      </p>
+    </section>
+  
+    <section class="why-adopt">
+      <h2>Miért fogadj örökbe?</h2>
+      <div class="reasons">
+        <div class="reason-card">
+          🐾
+          <h3>Megmented egy életét</h3>
+          <p>Minden örökbefogadás egy második esélyt jelent egy árva állat számára.</p>
+        </div>
+        <div class="reason-card">
+          💚
+          <h3>Hálás társad lesz</h3>
+          <p>Az örökbefogadott állatok rendkívül hűségesek és szeretetteljesek.</p>
+        </div>
+        <div class="reason-card">
+          🌱
+          <h3>Felelősségteljes döntés</h3>
+          <p>Segítesz csökkenteni a túlzsúfolt menhelyek terhét.</p>
+        </div>
+      </div>
+    </section>
+  
+    <section class="animals">
+  <h2>Elérhető állatok</h2>
+  <div class="animal-list">
+    <div class="animal-card" *ngFor="let animal of animals | slice:0:3">
+      <img [src]="'http://localhost:5000' + animal.imageUrl" alt="{{animal.name}}">
+      <h3>{{ animal.name }}</h3>
+      <p>{{ animal.age }} éves {{ animal.species }}, {{ animal.description }}</p>
+      <button (click)="viewDetails(animal._id)">Részletek</button>
+    </div>
+  </div>
+</section>
+
+  </div>
+  
