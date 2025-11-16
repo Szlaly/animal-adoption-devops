@@ -48,12 +48,6 @@ pipeline {
         }
 
         stage('Docker Build Images') {
-            agent {
-                docker {
-                    image 'docker:24-dind'  // Docker-in-Docker image
-                    args '-u root:root -v /var/run/docker.sock:/var/run/docker.sock'
-                }
-            }
             steps {
                 sh "docker build -t ${DOCKERHUB_USER}/${APP_NAME_BACKEND}:latest -f docker/Dockerfile.backend ."
                 sh "docker build -t ${DOCKERHUB_USER}/${APP_NAME_FRONTEND}:latest -f docker/Dockerfile.frontend ."

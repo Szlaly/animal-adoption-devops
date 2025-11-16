@@ -2,7 +2,9 @@ version: '3.9'
 
 services:
   jenkins:
-    image: jenkins/jenkins:lts
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.jenkins
     container_name: menhely-jenkins
     user: root
     ports:
