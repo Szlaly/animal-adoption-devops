@@ -21,13 +21,13 @@ pipeline {
             agent {
                 docker {
                     image 'node:20-alpine'
-                    args '-u root:root -v /var/run/docker.sock:/var/run/docker.sock'
+                    args '-v /var/run/docker.sock:/var/run/docker.sock'
                 }
             }
             steps {
                 dir("${BACKEND_DIR}") {
                     sh 'npm install'
-                    sh 'npx tsc'
+                    sh './node_modules/.bin/tsc'
                 }
             }
         }
@@ -36,13 +36,13 @@ pipeline {
             agent {
                 docker {
                     image 'node:20-alpine'
-                    args '-u root:root -v /var/run/docker.sock:/var/run/docker.sock'
+                    args '-v /var/run/docker.sock:/var/run/docker.sock'
                 }
             }
             steps {
                 dir("${FRONTEND_DIR}") {
                     sh 'npm install'
-                    sh 'npx ng build --configuration production'
+                    sh './node_modules/.bin/ng build --configuration production'
                 }
             }
         }
