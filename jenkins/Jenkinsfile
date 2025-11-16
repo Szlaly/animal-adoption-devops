@@ -4,7 +4,7 @@ pipeline {
     environment {
         BACKEND_DIR = "backend"
         FRONTEND_DIR = "frontend"
-        DOCKERHUB_USER = "szlly"   // ha nincs Dockerhub acc, szólj és átírjuk
+        DOCKERHUB_USER = "szlly"
         APP_NAME_BACKEND = "animal-backend"
         APP_NAME_FRONTEND = "animal-frontend"
     }
@@ -18,6 +18,12 @@ pipeline {
         }
 
         stage('Backend - Install & Build') {
+            agent {
+                docker {
+                    image 'node:20-alpine'
+                    args '-u root:root -v /var/run/docker.sock:/var/run/docker.sock'
+                }
+            }
             steps {
                 dir("${BACKEND_DIR}") {
                     sh 'npm install'
@@ -27,6 +33,12 @@ pipeline {
         }
 
         stage('Frontend - Install & Build') {
+            agent {
+                docker {
+                    image 'node:20-alpine'
+                    args '-u root:root -v /var/run/docker.sock:/var/run/docker.sock'
+                }
+            }
             steps {
                 dir("${FRONTEND_DIR}") {
                     sh 'npm install'
@@ -36,12 +48,17 @@ pipeline {
         }
 
         stage('Docker Build Images') {
+            agent {
+                docker {
+                    image 'docker:24-dind'  // Docker-in-Docker image
+                    args '-u root:root -v /var/run/docker.sock:/var/run/docker.sock'
+                }
+            }
             steps {
-                sh 'docker build -t ${DOCKERHUB_USER}/${APP_NAME_BACKEND}:latest -f docker/Dockerfile.backend .'
-                sh 'docker build -t ${DOCKERHUB_USER}/${APP_NAME_FRONTEND}:latest -f docker/Dockerfile.frontend .'
+                sh "docker build -t ${DOCKERHUB_USER}/${APP_NAME_BACKEND}:latest -f docker/Dockerfile.backend ."
+                sh "docker build -t ${DOCKERHUB_USER}/${APP_NAME_FRONTEND}:latest -f docker/Dockerfile.frontend ."
             }
         }
 
-        // később jön a DockerHub push + CD deploy
     }
 }
