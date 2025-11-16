@@ -1,0 +1,47 @@
+pipeline {
+    agent any
+
+    environment {
+        BACKEND_DIR = "backend"
+        FRONTEND_DIR = "frontend"
+        DOCKERHUB_USER = "szlly"   // ha nincs Dockerhub acc, szólj és átírjuk
+        APP_NAME_BACKEND = "animal-backend"
+        APP_NAME_FRONTEND = "animal-frontend"
+    }
+
+    stages {
+
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Backend - Install & Build') {
+            steps {
+                dir("${BACKEND_DIR}") {
+                    sh 'npm install'
+                    sh 'npx tsc'
+                }
+            }
+        }
+
+        stage('Frontend - Install & Build') {
+            steps {
+                dir("${FRONTEND_DIR}") {
+                    sh 'npm install'
+                    sh 'npx ng build --configuration production'
+                }
+            }
+        }
+
+        stage('Docker Build Images') {
+            steps {
+                sh 'docker build -t ${DOCKERHUB_USER}/${APP_NAME_BACKEND}:latest -f docker/Dockerfile.backend .'
+                sh 'docker build -t ${DOCKERHUB_USER}/${APP_NAME_FRONTEND}:latest -f docker/Dockerfile.frontend .'
+            }
+        }
+
+        // később jön a DockerHub push + CD deploy
+    }
+}
