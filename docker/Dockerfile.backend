@@ -6,7 +6,7 @@ WORKDIR /app
 # Csak a package.json-ok a gyorsabb cache-hez
 COPY backend/package*.json ./
 RUN npm install
-
+RUN npm install -g typescript
 # A teljes backend kód másolása
 COPY backend/ ./
 
