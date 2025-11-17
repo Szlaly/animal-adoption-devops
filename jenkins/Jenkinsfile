@@ -4,7 +4,6 @@ pipeline {
     environment {
         BACKEND_DIR = "backend"
         FRONTEND_DIR = "frontend"
-        DOCKERHUB_USER = "szlly"
         APP_NAME_BACKEND = "animal-backend"
         APP_NAME_FRONTEND = "animal-frontend"
     }
@@ -17,42 +16,66 @@ pipeline {
             }
         }
 
-       stage('Backend - Install & Build') {
-    agent {
-        docker {
-            image 'node:20-alpine'
-            args '-v /var/run/docker.sock:/var/run/docker.sock'
+        stage('Backend Tests') {
+            agent {
+                docker { image 'node:20-alpine' }
+            }
+            steps {
+                dir("${BACKEND_DIR}") {
+                    sh 'npm install'
+                    sh 'npm test'
+                }
+            }
         }
-    }
-    steps {
-        dir("${BACKEND_DIR}") {
+
+        stage('Frontend Tests') {
+            agent {
+                docker { image 'node:20-alpine' }
+            }
+            steps {
+                dir("${FRONTEND_DIR}") {
+                    sh 'npm install'
+                    sh 'npm test -- --watch=false --browsers=ChromeHeadless'
+                }
+            }
+        }
+
+        stage('Backend Build') {
+            agent {
+                docker { image 'node:20-alpine' }
+            }
+            steps {
+                dir("${BACKEND_DIR}") {
             sh 'npm install'
             sh 'chmod +x ./node_modules/.bin/tsc'
             sh './node_modules/.bin/tsc'
+                }
+            }
         }
-    }
-}
 
-stage('Frontend - Install & Build') {
-    agent {
-        docker {
-            image 'node:20-alpine'
-            args '-v /var/run/docker.sock:/var/run/docker.sock'
-        }
-    }
-    steps {
-        dir("${FRONTEND_DIR}") {
+        stage('Frontend Build') {
+            agent {
+                docker { image 'node:20-alpine' }
+            }
+            steps {
+                dir("${FRONTEND_DIR}") {
             sh 'npm install'
             sh 'chmod +x ./node_modules/.bin/ng'
             sh './node_modules/.bin/ng build --configuration production'
+                }
+            }
         }
-    }
-}
 
         stage('Docker Build Images') {
             steps {
-                sh "docker build -t ${DOCKERHUB_USER}/${APP_NAME_BACKEND}:latest -f docker/Dockerfile.backend ."
-                sh "docker build -t ${DOCKERHUB_USER}/${APP_NAME_FRONTEND}:latest -f docker/Dockerfile.frontend ."
+                sh "docker build -t ${APP_NAME_BACKEND}:latest -f docker/Dockerfile.backend ."
+                sh "docker build -t ${APP_NAME_FRONTEND}:latest -f docker/Dockerfile.frontend ."
+            }
+        }
+
+        stage('Local Deploy') {
+            steps {
+                sh "docker compose -f docker/docker-compose.prod.yml up -d --build"
             }
         }
 

@@ -1,10 +1,20 @@
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
-
+import { provideHttpClient } from '@angular/common/http';
+import { ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AppComponent],
+      providers:[provideHttpClient(),
+      {
+        provide: ActivatedRoute,
+        useValue: {
+          snapshot: { paramMap: { get: () => '123' } }, 
+          params: of({ id: '123' }) 
+        }
+      }]
     }).compileComponents();
   });
 
@@ -21,9 +31,9 @@ describe('AppComponent', () => {
   });
 
   it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, Animal_Adopt_Proj');
-  });
+  const fixture = TestBed.createComponent(AppComponent);
+  fixture.detectChanges();
+  const compiled = fixture.nativeElement as HTMLElement;
+  expect(compiled.querySelector('nav')).toBeTruthy(); // ellenőrzi, hogy a nav megjelenik
+});
 });

@@ -1,14 +1,25 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { provideHttpClient } from '@angular/common/http';
 import { RegisterComponent } from './register.component';
-
+import { ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
 describe('RegisterComponent', () => {
   let component: RegisterComponent;
   let fixture: ComponentFixture<RegisterComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RegisterComponent]
+      imports: [RegisterComponent],
+       providers: [
+      provideHttpClient() ,
+      {
+        provide: ActivatedRoute,
+        useValue: {
+          snapshot: { paramMap: { get: () => '123' } }, 
+          params: of({ id: '123' }) 
+        }
+      }
+    ]
     })
     .compileComponents();
 
