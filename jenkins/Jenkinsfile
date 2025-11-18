@@ -32,7 +32,8 @@ pipeline {
 
         stage('Frontend Tests') {
             agent {
-                docker { image 'node:20-alpine' }
+                docker { image 'cypress/browsers:node20.10.0-chrome118'
+                         args '-u 0:0' }
             }
             steps {
                 dir("${FRONTEND_DIR}") {
@@ -75,11 +76,7 @@ pipeline {
             }
         }
 
-        stage('Local Deploy') {
-            steps {
-                sh "docker compose -f docker/docker-compose.prod.yml up -d --build"
-            }
-        }
+     
 
     }
 }
