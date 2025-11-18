@@ -77,6 +77,25 @@ pipeline {
         }
 
      
+        stage('Deploy Services (Docker Compose)') {
+            steps {
+                sh "docker compose -f docker/docker-compose.yml up -d --build"
+            }
+        }
 
+        stage('Deploy Monitoring & Logs') {
+            steps {
+                sh "docker compose -f docker/docker-compose.monitoring.yml up -d --build"
+            }
+        }
+
+
+    }
+
+    post {
+        always {
+            echo "Pipeline finished."
+        }
+    
     }
 }
