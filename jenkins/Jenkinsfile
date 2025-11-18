@@ -23,7 +23,9 @@ pipeline {
             steps {
                 dir("${BACKEND_DIR}") {
                     sh 'npm install'
+                    sh 'chmod +x ./node_modules/.bin/jest'
                     sh 'npm test'
+
                 }
             }
         }
