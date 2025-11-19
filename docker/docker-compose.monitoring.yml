@@ -6,9 +6,10 @@ services:
     container_name: prometheus
     ports:
       - "9090:9090"
+    command:
+      - "--config.file=/etc/prometheus/config/prometheus.yml"
     volumes:
-       - /var/lib/jenkins/workspace/AnimalAdoption-CI/docker/prometheus:/etc/prometheus
-
+      - /var/lib/jenkins/workspace/AnimalAdoption-CI/docker/prometheus/prometheus.yml:/etc/prometheus/config/prometheus.yml
     restart: unless-stopped
 
   grafana:
@@ -29,6 +30,7 @@ services:
       - "9000:9000"     
       - "12201:12201/udp" 
     environment:
-      - GRAYLOG_ROOT_PASSWORD_SHA2=749F09BADE8ACA755660EEB17792DA880218D4FBDC4E25FBEC279D7FE9F65D70
+      - GRAYLOG_PASSWORD_SECRET=be40c32b4d698f01d8d4c2cab3b3251e7bb53f1cdb7c14447c237a7fb51f0601
+      - GRAYLOG_ROOT_PASSWORD_SHA256=749F09BADE8ACA755660EEB17792DA880218D4FBDC4E25FBEC279D7FE9F65D70
       - GRAYLOG_HTTP_EXTERNAL_URI=http://127.0.0.1:9000/
     restart: unless-stopped
