@@ -33,9 +33,8 @@ services:
         hard: -1
     ports:
       - "9200:9200"
-    networks:
-      - graylog
     restart: unless-stopped
+
   graylog:
     image: graylog/graylog:5.1
     container_name: graylog
@@ -48,9 +47,4 @@ services:
       - GRAYLOG_ELASTICSEARCH_HOSTS=http://elasticsearch:9200
     depends_on:
       - elasticsearch
-    networks:
-      - graylog
     restart: unless-stopped
-networks:
-  graylog:
-    driver: bridge
