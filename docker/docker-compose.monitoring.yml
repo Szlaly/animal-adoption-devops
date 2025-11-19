@@ -7,7 +7,7 @@ services:
     ports:
       - "9090:9090"
     volumes:
-       - /var/lib/jenkins/workspace/AnimalAdoption-CI/docker/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+       - /var/lib/jenkins/workspace/AnimalAdoption-CI/docker/prometheus:/etc/prometheus
 
     restart: unless-stopped
 
