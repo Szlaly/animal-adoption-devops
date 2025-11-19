@@ -21,31 +21,31 @@ services:
     depends_on:
       - prometheus
 
-  opensearch:
-    image: opensearchproject/opensearch:2.10.0
-    container_name: opensearch
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.12.0
+    container_name: elasticsearch
     environment:
       - discovery.type=single-node
-      - bootstrap.memory_lock=true
-      - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m"
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
     ulimits:
       memlock:
         soft: -1
         hard: -1
     ports:
       - "9200:9200"
+    networks:
+      - graylog
     restart: unless-stopped
   graylog:
     image: graylog/graylog:5.1
     container_name: graylog
     ports:
-      - "9000:9000"     
-      - "12201:12201/udp" 
+      - "9000:9000"
     environment:
       - GRAYLOG_PASSWORD_SECRET=be40c32b4d698f01d8d4c2cab3b3251e7bb53f1cdb7c14447c237a7fb51f0601
       - GRAYLOG_ROOT_PASSWORD_SHA256=749F09BADE8ACA755660EEB17792DA880218D4FBDC4E25FBEC279D7FE9F65D70
       - GRAYLOG_HTTP_EXTERNAL_URI=http://127.0.0.1:9000/
-      - GRAYLOG_ELASTICSEARCH_HOSTS=http://opensearch:9200
+      - GRAYLOG_ELASTICSEARCH_HOSTS=http://elasticsearch:9200
     depends_on:
-      - opensearch
+      - elasticsearch
     restart: unless-stopped

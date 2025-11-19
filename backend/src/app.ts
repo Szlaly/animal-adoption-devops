@@ -20,7 +20,16 @@ app.use("/api/users", userRoutes);
 app.use('/api/support', supportRoutes);
 app.use("/api/adoptions", adoptionRoutes);
 app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
+const apiRequestCounter = new client.Counter({
+  name: 'api_requests_total',
+  help: 'Összes API hívás',
+  labelNames: ['route', 'method']
+});
 
+app.use((req, res, next) => {
+  apiRequestCounter.inc({ route: req.path, method: req.method });
+  next();
+});
 // Prometheus 
 app.get("/metrics", async (req, res) => {
   res.set("Content-Type", client.register.contentType);
