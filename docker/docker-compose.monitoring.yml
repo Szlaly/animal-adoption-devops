@@ -2,14 +2,12 @@ version: '3.9'
 
 services:
   prometheus:
-    image: prom/prometheus:latest
+    build:
+      context: ./prometheus
+      dockerfile: Dockerfile
     container_name: prometheus
     ports:
       - "9090:9090"
-    command:
-      - "--config.file=/etc/prometheus/config/prometheus.yml"
-    volumes:
-      - /var/lib/jenkins/workspace/AnimalAdoption-CI/docker/prometheus/prometheus.yml:/etc/prometheus/config/prometheus.yml
     restart: unless-stopped
 
   grafana:
@@ -23,6 +21,20 @@ services:
     depends_on:
       - prometheus
 
+  opensearch:
+    image: opensearchproject/opensearch:2.10.0
+    container_name: opensearch
+    environment:
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    ports:
+      - "9200:9200"
+    restart: unless-stopped
   graylog:
     image: graylog/graylog:5.1
     container_name: graylog
@@ -33,4 +45,7 @@ services:
       - GRAYLOG_PASSWORD_SECRET=be40c32b4d698f01d8d4c2cab3b3251e7bb53f1cdb7c14447c237a7fb51f0601
       - GRAYLOG_ROOT_PASSWORD_SHA256=749F09BADE8ACA755660EEB17792DA880218D4FBDC4E25FBEC279D7FE9F65D70
       - GRAYLOG_HTTP_EXTERNAL_URI=http://127.0.0.1:9000/
+      - GRAYLOG_ELASTICSEARCH_HOSTS=http://opensearch:9200
+    depends_on:
+      - opensearch
     restart: unless-stopped
