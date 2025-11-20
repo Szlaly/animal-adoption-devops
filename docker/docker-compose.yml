@@ -48,5 +48,6 @@ volumes:
   mongo-data:
 
 networks:
-  shared-net:   
+  shared-net:
+    external: true   
     driver: bridge
