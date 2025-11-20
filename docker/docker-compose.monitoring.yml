@@ -52,5 +52,5 @@ services:
       - GRAYLOG_ELASTICSEARCH_HOSTS=http://elasticsearch:9200
     restart: unless-stopped
 
-  volumes:
-   es-data:
+volumes:
+  es-data:
