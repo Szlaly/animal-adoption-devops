@@ -12,6 +12,8 @@ services:
     environment:
       MONGO_INITDB_DATABASE: menhely
     restart: unless-stopped
+    networks:
+      - shared-net
 
   backend:
     build:
@@ -26,6 +28,8 @@ services:
       MONGODB_URI: mongodb://mongo:27017/menhely
       PORT: 5000
     restart: unless-stopped
+    networks:
+      - shared-net
 
   frontend:
     build:
@@ -37,6 +41,12 @@ services:
     depends_on:
       - backend
     restart: unless-stopped
+    networks:
+      - shared-net
 
 volumes:
   mongo-data:
+
+networks:
+  shared-net:   
+    driver: bridge

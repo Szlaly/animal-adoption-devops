@@ -7,12 +7,16 @@ services:
       dockerfile: DockerFile
     ports:
       - "9090:9090"
+    networks:
+      - shared-net
     restart: unless-stopped
 
   grafana:
     image: grafana/grafana:latest
     ports:
       - "3000:3000"
+    networks:
+      - shared-net
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=adminpassword
     restart: unless-stopped
@@ -32,9 +36,13 @@ services:
         hard: -1
     ports:
       - "9200:9200"
+    networks:
+      - shared-net
     volumes:
       - es-data:/usr/share/elasticsearch/data
     restart: unless-stopped
+
+
   graylog:
     image: graylog/graylog:4.3
     depends_on:
@@ -44,6 +52,8 @@ services:
       - "9000:9000"
       - "12201:12201"
       - "12201:12201/udp"
+    networks:
+      - shared-net
     environment:
       - GRAYLOG_PASSWORD_SECRET=be40c32b4d698f01d8d4c2cab3b3251e7bb53f1cdb7c14447c237a7fb51f0601
       - GRAYLOG_ROOT_PASSWORD_SHA256=749F09BADE8ACA755660EEB17792DA880218D4FBDC4E25FBEC279D7FE9F65D70
@@ -54,3 +64,7 @@ services:
 
 volumes:
   es-data:
+  
+networks:
+  shared-net:
+    external: true

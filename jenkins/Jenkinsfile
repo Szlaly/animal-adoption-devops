@@ -71,8 +71,14 @@ pipeline {
 
         stage('Docker Build Images') {
             steps {
-                sh "docker build -t ${APP_NAME_BACKEND}:latest -f docker/Dockerfile.backend ."
-                sh "docker build -t ${APP_NAME_FRONTEND}:latest -f docker/Dockerfile.frontend ."
+                sh """
+                    echo "Checking Docker network: shared-net..."
+                    docker network inspect shared-net >/dev/null 2>&1 || docker network create shared-net
+                    echo "Docker network ready."
+
+                    docker build -t ${APP_NAME_BACKEND}:latest -f docker/Dockerfile.backend .
+                    docker build -t ${APP_NAME_FRONTEND}:latest -f docker/Dockerfile.frontend .
+                """
             }
         }
 
