@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import app from "./app";
-
+import logger from './logger';
 dotenv.config();
 
 const PORT = process.env.PORT || 5000;
@@ -9,9 +9,9 @@ const PORT = process.env.PORT || 5000;
 mongoose
   .connect(process.env.MONGODB_URI || "")
   .then(() => {
-    console.log("MongoDB kapcsolódva");
+    logger.info("MongoDB kapcsolódva");
     app.listen(PORT, () => {
-      console.log(`Szerver fut: http://localhost:${PORT}`);
+      logger.info(`Szerver fut: http://localhost:${PORT}`);
     });
   })
-  .catch((err) => console.error("DB hiba: ", err));
+  .catch((err) => logger.error("DB hiba: ", err));

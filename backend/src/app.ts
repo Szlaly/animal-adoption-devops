@@ -8,9 +8,16 @@ import adoptionRoutes from "./routes/adoption.routes";
 import supportRoutes from './routes/support.routes';
 import path from 'path';
 import client from "prom-client";
+import logger from './logger';
 
 const app = express();
 client.collectDefaultMetrics();
+
+app.use((req, res, next) => {
+  logger.info(`${req.method} ${req.url}`);
+  next();
+});
+
 // middleware
 app.use(cors());
 app.use(express.json());
@@ -38,6 +45,7 @@ app.get("/metrics", async (req, res) => {
 
 // teszt route
 app.get("/", (req, res) => {
+  logger.info('Home route accessed'); 
   res.send("API működik");
 });
 
