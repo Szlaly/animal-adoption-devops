@@ -1,15 +1,17 @@
 declare module 'winston-gelf' {
-    import { TransportStreamOptions } from 'winston';
-    import Transport from 'winston-transport';
+  import { TransportStreamOptions } from 'winston-transport';
+  import TransportStream = require('winston-transport');
 
-    export class GelfTransport extends Transport {
-        constructor(opts?: TransportStreamOptions & {
-            gelfPro: {
-                adapterName: string;
-                host: string;
-                port: number;
-                fields?: Record<string, any>;
-            };
-        });
-    }
+  interface GelfTransportOptions extends TransportStreamOptions {
+    gelfPro: {
+      adapterName: string;
+      host: string;
+      port: number;
+      fields?: Record<string, string>;
+    };
+  }
+
+  export default class GelfTransport extends TransportStream {
+    constructor(options: GelfTransportOptions);
+  }
 }
