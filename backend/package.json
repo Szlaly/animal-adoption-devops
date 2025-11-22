@@ -19,7 +19,8 @@
     "mongoose": "^8.14.1",
     "multer": "^2.0.2",
     "prom-client": "^15.1.3",
-    "winston": "^3.18.3"
+    "winston": "^3.18.3",
+    "winston-gelf": "^1.7.0"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
