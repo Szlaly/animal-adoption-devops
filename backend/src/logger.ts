@@ -1,5 +1,6 @@
 import winston from 'winston';
-import { GelfTransport } from 'winston-gelf'; 
+import * as WinstonGelf from 'winston-gelf';
+const GelfTransport = WinstonGelf.GelfTransport;
 
 const logger = winston.createLogger({
   level: 'info',
