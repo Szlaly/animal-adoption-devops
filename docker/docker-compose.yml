@@ -3,19 +3,7 @@ version: '3.9'
 
 services:
 
-  nginx:
-    build:
-      context: ../nginx
-      dockerfile: Dockerfile
-    container_name: menhely-nginx
-    ports:
-      - "80:80"
-    depends_on:
-      - frontend
-      - backend
-    restart: unless-stopped
-    networks:
-      - shared-net
+
   mongo:
     image: mongo:6.0
     container_name: menhely-mongo
@@ -51,7 +39,6 @@ services:
       context: ..
       dockerfile: docker/Dockerfile.frontend
     container_name: menhely-frontend
-    hostname: frontend
     ports:
       - "4200:80"
     depends_on:
@@ -59,7 +46,19 @@ services:
     restart: unless-stopped
     networks:
       - shared-net
-
+  nginx:
+    build:
+      context: ../nginx
+      dockerfile: Dockerfile
+    container_name: menhely-nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - frontend
+      - backend
+    restart: unless-stopped
+    networks:
+      - shared-net
 volumes:
   mongo-data:
 
