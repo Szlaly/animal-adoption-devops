@@ -46,21 +46,7 @@ services:
     restart: unless-stopped
     networks:
       - shared-net
-  nginx:
-    build:
-      context: ../nginx
-      dockerfile: Dockerfile
-    container_name: menhely-nginx
-    volumes:
-      - ../menhely-frontend/dist:/usr/share/nginx/html:ro
-    ports:
-      - "80:80"
-    depends_on:
-      - frontend
-      - backend
-    restart: unless-stopped
-    networks:
-      - shared-net
+
 volumes:
   mongo-data:
 
