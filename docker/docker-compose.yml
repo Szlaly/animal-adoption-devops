@@ -51,6 +51,7 @@ services:
       context: ..
       dockerfile: docker/Dockerfile.frontend
     container_name: menhely-frontend
+    hostname: frontend
     ports:
       - "4200:80"
     depends_on:
