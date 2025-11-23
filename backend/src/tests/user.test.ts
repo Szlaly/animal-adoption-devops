@@ -1,6 +1,7 @@
 import request from 'supertest';
 import app from '../app';
 import { Request, Response, NextFunction } from 'express';
+import logger from '../logger';
 
 
 // Mock all animal controller methods
@@ -37,4 +38,7 @@ describe("User API", () => {
     expect(response.status).toBe(200);
     expect(Array.isArray(response.body)).toBe(true);
   });
+});
+afterAll(() => {
+  logger.close();  
 });
