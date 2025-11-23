@@ -95,10 +95,13 @@ pipeline {
             }
         }
         stage('Deploy via Ansible') {
-            steps {
-                sh "ansible-playbook ansible/deploy.yml -i ansible/host.ini"
+        steps {
+            docker.image('ansible-target:latest').inside {
+                sh 'ansible-playbook ansible/deploy.yml -i ansible/host.ini'
             }
         }
+    }
+
 
     }
 
