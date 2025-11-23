@@ -81,7 +81,11 @@ pipeline {
                 """
             }
         }
-
+        stage('Build Ansible Docker Image') {
+            steps {
+                sh 'docker build -t ansible-target:latest -f docker/Dockerfile.ansible .'
+            }
+        }
      
         stage('Deploy Services (Docker Compose)') {
             steps {
@@ -95,16 +99,16 @@ pipeline {
             }
         }
         stage('Deploy via Ansible') {
-    agent {
-        docker {
-            image 'ansible-target:latest'
-            args '-u ansible:ansible'  
+            agent {
+                docker {
+                    image 'ansible-target:latest'
+                    args '-u ansible:ansible'
+                }
+            }
+            steps {
+                sh 'ansible-playbook ansible/deploy.yml -i ansible/host.ini'
+            }
         }
-    }
-    steps {
-        sh 'ansible-playbook ansible/deploy.yml -i ansible/host.ini'
-    }
-}
 
 
 
