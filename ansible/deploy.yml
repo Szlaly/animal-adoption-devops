@@ -9,8 +9,11 @@
   tasks:
     - name: Restart docker compose services
       ansible.builtin.shell: |
-        cd /mnt/c/Users/Tomi/Desktop/animal-adoption-devops
+        cd {{ playbook_dir }}/..
         docker compose -f docker/docker-compose.yml up -d
+      args:
+        chdir: "{{ playbook_dir }}/.."
+
     - name: Create project directory if missing
       file:
         path: "{{ project_dir }}"
