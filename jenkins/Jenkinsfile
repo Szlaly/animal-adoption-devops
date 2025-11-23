@@ -96,7 +96,7 @@ pipeline {
         }
         stage('Deploy via Ansible') {
             steps {
-                sh "ansible-playbook docker/ansible/deploy.yml -i docker/ansible/host.ini"
+                sh "ansible-playbook ansible/deploy.yml -i ansible/host.ini"
             }
         }
 
