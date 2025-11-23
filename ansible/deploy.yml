@@ -1,0 +1,31 @@
+- name: Deploy Animal Adoption Platform
+  hosts: local
+  connection: local
+  become: yes
+
+  vars:
+    project_dir: /opt/animal-adoption-platform
+
+  tasks:
+    - name: Restart docker compose services
+      ansible.builtin.shell: |
+        cd /mnt/c/Users/Tomi/Desktop/animal-adoption-devops
+        docker compose -f docker/docker-compose.yml up -d
+    - name: Create project directory if missing
+      file:
+        path: "{{ project_dir }}"
+        state: directory
+        mode: '0755'
+
+    - name: Copy full repository to target folder
+      synchronize:
+        src: "{{ playbook_dir }}/.."
+        dest: "{{ project_dir }}"
+        delete: yes
+        recursive: yes
+
+    - name: Bring up main backend/frontend stack
+      command: docker compose -f {{ project_dir }}/docker/docker-compose.yml up -d --build
+
+    - name: Bring up monitoring/logging stack
+      command: docker compose -f {{ project_dir }}/docker/docker-compose.monitoring.yml up -d --build

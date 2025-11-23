@@ -17,7 +17,6 @@ RUN npx ng build --configuration production
 FROM nginx:alpine
 
 # Angular build fájlok átmásolása az Nginx default folderbe
-# Figyelj: a builded a 'browser' almappában van, ezért azt másoljuk
 COPY --from=build /app/dist/animal-adopt-proj/browser /usr/share/nginx/html
 
 # Saját nginx konfiguráció másolása

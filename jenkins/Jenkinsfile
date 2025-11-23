@@ -94,7 +94,11 @@ pipeline {
                 sh "docker compose -f docker/docker-compose.monitoring.yml up -d --build"
             }
         }
-
+        stage('Deploy via Ansible') {
+            steps {
+                sh "ansible-playbook ansible/deploy.yml -i ansible/hosts.ini"
+            }
+        }
 
     }
 

@@ -2,7 +2,13 @@ version: '3.9'
 
 
 services:
-
+  ansible:
+    build:
+      context: ..
+      dickerfile: docker/Dockerfile.ansible
+    volumes:
+      - .:/workspace
+    working_dir: /workspace
 
   mongo:
     image: mongo:6.0
