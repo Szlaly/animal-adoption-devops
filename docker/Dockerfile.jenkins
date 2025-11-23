@@ -2,10 +2,10 @@ FROM jenkins/jenkins:lts
 
 USER root
 
-# Alapcsomagok, Docker CLI
+# Alapcsomagok, Docker CLI és Ansible
 RUN apt-get update && \
     apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-release \
-                       python3 python3-venv sshpass git sudo rsync && \
+                       python3 python3-pip sshpass git sudo rsync ansible && \
     curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg && \
     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian $(lsb_release -cs) stable" \
         | tee /etc/apt/sources.list.d/docker.list > /dev/null && \
@@ -16,12 +16,5 @@ RUN apt-get update && \
 RUN groupadd -g 999 docker || true && \
     usermod -aG docker jenkins
 
-# Virtual environment az Ansible-hez
 USER jenkins
-RUN python3 -m venv /var/jenkins_home/venv && \
-    /var/jenkins_home/venv/bin/pip install --upgrade pip ansible
-
-# PATH frissítés
-ENV PATH="/var/jenkins_home/venv/bin:$PATH"
-
 ENV JENKINS_HOME=/var/jenkins_home
