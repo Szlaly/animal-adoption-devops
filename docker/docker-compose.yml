@@ -5,7 +5,7 @@ services:
   ansible:
     build:
       context: ..
-      dickerfile: docker/Dockerfile.ansible
+      dockerfile: docker/Dockerfile.ansible
     volumes:
       - .:/workspace
     working_dir: /workspace
