@@ -1,17 +1,16 @@
 import winston from 'winston';
-import GelfTransport from 'winston-gelf';  
+
+const Syslog = require('winston-syslog').Syslog || require('winston-syslog');
 
 const logger = winston.createLogger({
   level: 'info',
   transports: [
     new winston.transports.Console(),
-    new GelfTransport({
-      gelfPro: {
-        adapterName: 'udp',
-        host: 'graylog', 
-        port: 12201,
-        fields: { facility: 'backend' }
-      }
+    new Syslog({
+      host: 'graylog',
+      port: 5140,
+      protocol: 'udp4',
+      app_name: 'backend'
     })
   ]
 });
