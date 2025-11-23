@@ -1,7 +1,22 @@
+# Base image
 FROM ubuntu:22.04
 
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=Europe/Budapest
+
 RUN apt-get update && \
-    apt-get install -y python3 python3-pip sshpass ansible && \
-    apt-get clean
+    apt-get install -y --no-install-recommends \
+        python3 \
+        python3-pip \
+        sshpass \
+        ansible \
+        tzdata \
+        git \
+        curl \
+        sudo && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 WORKDIR /workspace
+
+CMD ["/bin/bash"]
