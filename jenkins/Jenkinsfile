@@ -95,12 +95,11 @@ pipeline {
         }
         stage('Deploy via Ansible') {
         steps {
-            sh '''
-            source /var/jenkins_home/venv/bin/activate
-            ansible-playbook ansible/deploy.yml -i ansible/host.ini
-            '''
+        withEnv(['PATH=/var/jenkins_home/venv/bin:' + env.PATH]) {
+            sh 'ansible-playbook ansible/deploy.yml -i ansible/host.ini'
         }
     }
+}
 
 
 
