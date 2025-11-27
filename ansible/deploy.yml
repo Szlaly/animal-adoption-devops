@@ -18,7 +18,7 @@
       - dist
       - build
       - .DS_Store
-      - *.log
+      - "*.log"
       - docker/mongodb-init/*.secret
       - tests
       - coverage
