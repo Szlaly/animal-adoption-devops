@@ -5,30 +5,75 @@
 
   vars:
     project_dir: /opt/animal-adoption-platform
+    deploy_user: ansible         
+    deploy_group: ansible
+    rsync_excludes:
+      - .git
+      - node_modules
+      - backend/node_modules
+      - frontend/node_modules
+      - .env
+      - .env.local
+      - .env.*
+      - dist
+      - build
+      - .DS_Store
+      - *.log
+      - docker/mongodb-init/*.secret
+      - tests
+      - coverage
+      - .vscode
+      - .idea
 
   tasks:
-    - name: Restart docker compose services
-      ansible.builtin.shell: |
-        cd {{ playbook_dir }}/..
-        docker compose -f docker/docker-compose.yml up -d
-      args:
-        chdir: "{{ playbook_dir }}/.."
+    - name: Ensure deploy user exists
+      ansible.builtin.user:
+        name: "{{ deploy_user }}"
+        state: present
+        create_home: yes
+      become: yes
 
     - name: Create project directory if missing
       file:
         path: "{{ project_dir }}"
         state: directory
         mode: '0755'
+        owner: "{{ deploy_user }}"
+        group: "{{ deploy_group }}"
 
-    - name: Copy full repository to target folder
+    - name: Sync repository to target folder using rsync with excludes
       synchronize:
         src: "{{ playbook_dir }}/.."
         dest: "{{ project_dir }}"
         delete: yes
         recursive: yes
+        rsync_opts: "{{ rsync_excludes | map('regex_replace','^','--exclude=') | list }}"
 
-    - name: Bring up main backend/frontend stack
-      command: docker compose -f {{ project_dir }}/docker/docker-compose.yml up -d --build
+    - name: Ensure ownership is correct after synchronization
+      file:
+        path: "{{ project_dir }}"
+        owner: "{{ deploy_user }}"
+        group: "{{ deploy_group }}"
+        recurse: yes
 
-    - name: Bring up monitoring/logging stack
-      command: docker compose -f {{ project_dir }}/docker/docker-compose.monitoring.yml up -d --build
+    - name: Ensure docker-compose network exists
+      community.docker.docker_network:
+        name: shared-net
+        driver: bridge
+        state: present
+
+    - name: Bring up main backend/frontend stack 
+      community.docker.docker_compose:
+        project_src: "{{ project_dir }}/docker"
+        pull: true
+        build: true
+        state: present
+
+    - name: Bring up monitoring/logging stack 
+      community.docker.docker_compose:
+        project_src: "{{ project_dir }}/docker"
+        files:
+          - docker-compose.monitoring.yml
+        pull: true
+        build: true
+        state: present

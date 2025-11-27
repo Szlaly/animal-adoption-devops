@@ -25,7 +25,6 @@ pipeline {
                     sh 'npm install'
                     sh 'chmod +x ./node_modules/.bin/jest'
                     sh 'npm test'
-
                 }
             }
         }
@@ -49,9 +48,9 @@ pipeline {
             }
             steps {
                 dir("${BACKEND_DIR}") {
-            sh 'npm install'
-            sh 'chmod +x ./node_modules/.bin/tsc'
-            sh './node_modules/.bin/tsc'
+                    sh 'npm install'
+                    sh 'chmod +x ./node_modules/.bin/tsc'
+                    sh './node_modules/.bin/tsc'
                 }
             }
         }
@@ -62,9 +61,9 @@ pipeline {
             }
             steps {
                 dir("${FRONTEND_DIR}") {
-            sh 'npm install'
-            sh 'chmod +x ./node_modules/.bin/ng'
-            sh './node_modules/.bin/ng build --configuration production'
+                    sh 'npm install'
+                    sh 'chmod +x ./node_modules/.bin/ng'
+                    sh './node_modules/.bin/ng build --configuration production'
                 }
             }
         }
@@ -81,27 +80,12 @@ pipeline {
                 """
             }
         }
-     
-        stage('Deploy Services (Docker Compose)') {
-            steps {
-                sh "docker compose -f docker/docker-compose.yml up -d --build"
-            }
-        }
 
-        stage('Deploy Monitoring & Logs') {
-            steps {
-                sh "docker compose -f docker/docker-compose.monitoring.yml up -d --build"
-            }
-        }
         stage('Deploy via Ansible') {
-        steps {
-        
-            sh 'ansible-playbook ansible/deploy.yml -i ansible/host.ini'
-        
-    }
-}
-
-
+            steps {
+                sh 'ansible-playbook ansible/deploy.yml -i ansible/host.ini'
+            }
+        }
 
     }
 
@@ -109,6 +93,5 @@ pipeline {
         always {
             echo "Pipeline finished."
         }
-    
     }
 }
