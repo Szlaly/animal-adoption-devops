@@ -63,14 +63,14 @@
         state: present
 
     - name: Bring up main backend/frontend stack 
-      community.docker.docker_compose:
+      community.docker.docker_compose_v2:
         project_src: "{{ project_dir }}/docker"
         pull: true
         build: true
         state: present
 
     - name: Bring up monitoring/logging stack 
-      community.docker.docker_compose:
+      community.docker.docker_compose_v2:
         project_src: "{{ project_dir }}/docker"
         files:
           - docker-compose.monitoring.yml
