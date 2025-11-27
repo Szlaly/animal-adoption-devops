@@ -34,6 +34,6 @@ describe('AppComponent', () => {
   const fixture = TestBed.createComponent(AppComponent);
   fixture.detectChanges();
   const compiled = fixture.nativeElement as HTMLElement;
-  expect(compiled.querySelector('nav')).toBeTruthy(); // ellenőrzi, hogy a nav megjelenik
+  expect(compiled.querySelector('nav')).toBeTruthy(); 
 });
 });
