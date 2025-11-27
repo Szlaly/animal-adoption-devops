@@ -66,7 +66,7 @@
       community.docker.docker_compose_v2:
         project_src: "{{ project_dir }}/docker"
         pull: missing
-        build: true
+        build: always
         state: present
 
     - name: Bring up monitoring/logging stack 
@@ -75,5 +75,5 @@
         files:
           - docker-compose.monitoring.yml
         pull: missing
-        build: true
+        build: always
         state: present
