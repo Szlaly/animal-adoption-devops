@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
-import { provideHttpClientTesting , HttpTestingController } from '@angular/common/http/testing';
-
-import { AnimalService, Animal } from './animal.service';
+import { provideHttpClient, withFetch } from '@angular/common/http';
+import { provideHttpClientTesting, HttpTestingController } from '@angular/common/http/testing';
+import { Animal, AnimalService } from './animal.service';
 
 describe('AnimalService', () => {
   let service: AnimalService;
@@ -9,16 +9,19 @@ describe('AnimalService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [provideHttpClientTesting()],
-      providers: [AnimalService]
+      providers: [
+        AnimalService,
+        provideHttpClient(withFetch()),
+        provideHttpClientTesting()   
+      ]
     });
 
     service = TestBed.inject(AnimalService);
-    httpMock = TestBed.inject(HttpTestingController);
+    httpMock = TestBed.inject(HttpTestingController);  
   });
 
   afterEach(() => {
-    httpMock.verify(); 
+    httpMock.verify();  
   });
 
   it('should be created', () => {
@@ -27,12 +30,22 @@ describe('AnimalService', () => {
 
   it('getAnimals should return an array of animals', () => {
     const mockAnimals: Animal[] = [
-      { name: 'Doggo', age: 3, species: 'Dog', breed: 'Labrador', description: '', health: '', story: '', likedBy: [], imageUrl: '' }
-    ];
+  {
+    _id: '123',
+    name: 'Cirmi',
+    age: 2,
+    species: 'Cat',
+    breed: 'European',
+    description: 'Friendly',
+    health:"Good",
+    story:"no",
+    likedBy:[],
+    imageUrl: 'test.jpg'
+  }
+];
 
-    service.getAnimals().subscribe((animals) => {
-      expect(animals.length).toBe(1);
-      expect(animals[0].name).toBe('Doggo');
+    service.getAnimals().subscribe(animals => {
+      expect(animals).toEqual(mockAnimals);
     });
 
     const req = httpMock.expectOne('http://localhost:5000/api/animals');
