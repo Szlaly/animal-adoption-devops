@@ -17,7 +17,7 @@ services:
       - "27017:27017"
     volumes:
       - mongo-data:/data/db
-      - ./docker/mongodb-init/demodata.js:/docker-entrypoint-initdb.d/demodata.js:ro
+      - ./mongodb-init/demodata.js:/docker-entrypoint-initdb.d/demodata.js:ro
     environment:
       MONGO_INITDB_DATABASE: menhely
     restart: unless-stopped
